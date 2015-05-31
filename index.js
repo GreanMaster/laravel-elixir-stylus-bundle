@@ -1,13 +1,19 @@
-var gulp = require('gulp');
-var notify = require('gulp-notify');
-var stylus = require('gulp-stylus');
-var autoprefixer = require('gulp-autoprefixer');
-var minify = require('gulp-minify-css');
-var gulpif = require('gulp-if');
-var elixir = require('laravel-elixir');
-var utilities = require('laravel-elixir/ingredients/commands/Utilities');
+var gulp         = require('gulp');
+var axis         = require('axis');
+var lost         = require('lost');
+var typographic  = require('typographic');
+var stylus       = require('gulp-stylus');
+var postcss      = require('gulp-postcss');
+var elixir       = require('laravel-elixir');
+var gulpif       = require('laravel-elixir/node_modules/gulp-if');
+var gulpFilter   = require('laravel-elixir/node_modules/gulp-filter');
+var sourcemaps   = require('laravel-elixir/node_modules/gulp-sourcemaps');
+var minify       = require('laravel-elixir/node_modules/gulp-minify-css');
+var autoprefixer = require('laravel-elixir/node_modules/gulp-autoprefixer');
+var utilities    = require('laravel-elixir/ingredients/commands/Utilities');
+var Notification = require('laravel-elixir/ingredients/commands/Notification');
 
-elixir.extend('stylus', function(src, output) {
+elixir.extend('stylusBundle', function(src, output) {
 
     var config = this;
 
@@ -15,33 +21,36 @@ elixir.extend('stylus', function(src, output) {
 
     src = utilities.buildGulpSrc(src, baseDir, '**/*.styl');
 
-    gulp.task('stylus', function() {
+    gulp.task('stylusBundle', function() {
+
+        var filter = gulpFilter(['*', '!_*.styl']);
+
         var onError = function(err) {
-            notify.onError({
-                title:    "Laravel Elixir",
-                subtitle: "Stylus Compilation Failed!",
-                message:  "Error: <%= error.message %>",
-                icon: __dirname + '/../laravel-elixir/icons/fail.png'
-            })(err);
+
+            new Notification().error(err,'Error on line <%= error.lineno %> at column <%= error.column %>\n');
 
             this.emit('end');
         };
 
         return gulp.src(src)
-            .pipe(stylus()).on('error', onError)
+            .pipe(filter)
+            .pipe(gulpif(config.production, sourcemaps.init()))
+            .pipe(stylus({
+                use: [axis(), typographic()],
+                import: ['typographic']
+            })).on('error', onError)
+            .pipe(postcss([
+                lost()
+            ]))
             .pipe(autoprefixer())
             .pipe(gulpif(config.production, minify()))
+            .pipe(gulpif(config.production, sourcemaps.write('.', {includeContent: false, sourceRoot: '.'})))
             .pipe(gulp.dest(output || config.cssOutput))
-            .pipe(notify({
-                title: 'Laravel Elixir',
-                subtitle: 'Stylus Compiled!',
-                icon: __dirname + '/../laravel-elixir/icons/laravel.png',
-                message: ' '
-            }));
+            .pipe(new Notification().message('Stylus Compiled!'));
     });
 
-    this.registerWatcher('stylus', baseDir + '/**/*.styl');
+    this.registerWatcher('stylusBundle', baseDir + '/**/*.styl');
 
-    return this.queueTask('stylus');
+    return this.queueTask('stylusBundle');
 
 });
