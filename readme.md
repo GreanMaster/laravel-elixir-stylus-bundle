@@ -1,25 +1,25 @@
+## laravel-elixir-stylus-bundle
+Laravel Elixir Stylus bundle with [axis](https://github.com/jenius/axis), [nib](https://github.com/tj/nib), [typographic](https://github.com/corysimmons/typographic), [lost grid](https://github.com/corysimmons/lost) and [autoprefixer](https://github.com/sindresorhus/gulp-autoprefixer)
+
+## Installation
+`npm install laravel-elixir-stylus-bundle --save-dev`
+
 ## Usage
 
 This is a simple wrapper around Laravel Elixir. Add it to your Elixir-enhanced Gulpfile, like so:
 
-```
+```javascript
 var elixir = require('laravel-elixir');
 
-require('laravel-elixir-stylus');
+require('laravel-elixir-stylus-bundle');
 
 elixir(function(mix) {
-   mix.stylus();
+   mix.stylusBundle();
 });
 ```
 
-This will scan your `resources/assets/stylus` directory for all files. Instead, if you only want to compile a single file, you may do:
+This will scan your `resources/assets/stylus` directory for all files except `_` prefix file and diractory inside `stylus` diractory ex. `_app.stylus` `resources/assets/stylus/font/` will not compile
 
-```
-mix.stylus("bootstrap.styl");
-```
+If you want minify and sourcemap just use `--production` flag like `gulp --production`
 
-Finally, if you'd like to output to a different directory than the default `public/css`, then you may override this as well.
-
-```
-mix.stylus("bootstrap.styl", "public/css/foo/bar/");
-```
+For watch file just use `gulp watch`

@@ -1,7 +1,7 @@
 {
   "name": "laravel-elixir-stylus-bundle",
   "version": "1.0.0",
-  "description": "Laravel Elixir Stylus bundle with axis, nib, lost grid and autoprefixer",
+  "description": "Laravel Elixir Stylus bundle with axis, nib, typographic, lost grid and autoprefixer",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,8 @@
     "elixir",
     "stylus",
     "axis",
-    "nib"
+    "nib",
+    "lost"
   ],
   "repository": {
     "type": "git",
