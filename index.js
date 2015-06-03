@@ -1,6 +1,7 @@
 var gulp         = require('gulp');
 var axis         = require('axis');
 var lost         = require('lost');
+var rupture      = require('rupture');
 var typographic  = require('typographic');
 var stylus       = require('gulp-stylus');
 var postcss      = require('gulp-postcss');
@@ -36,7 +37,7 @@ elixir.extend('stylusBundle', function(src, output) {
             .pipe(filter)
             .pipe(gulpif(config.production, sourcemaps.init()))
             .pipe(stylus({
-                use: [axis(), typographic()],
+                use: [axis(), typographic(), rupture()],
                 import: ['typographic']
             })).on('error', onError)
             .pipe(postcss([
@@ -44,7 +45,9 @@ elixir.extend('stylusBundle', function(src, output) {
             ]))
             .pipe(autoprefixer())
             .pipe(gulpif(config.production, minify()))
-            .pipe(gulpif(config.production, sourcemaps.write('.', {includeContent: false, sourceRoot: '.'})))
+            .pipe(gulpif(config.production, sourcemaps.write('.', {
+                includeContent: false, sourceRoot: '.'
+            })))
             .pipe(gulp.dest(output || config.cssOutput))
             .pipe(new Notification().message('Stylus Compiled!'));
     });

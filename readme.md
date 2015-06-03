@@ -1,5 +1,5 @@
 ## laravel-elixir-stylus-bundle
-Laravel Elixir Stylus bundle with [axis](https://github.com/jenius/axis), [nib](https://github.com/tj/nib), [typographic](https://github.com/corysimmons/typographic), [lost grid](https://github.com/corysimmons/lost) and [autoprefixer](https://github.com/sindresorhus/gulp-autoprefixer)
+Laravel Elixir Stylus bundle with [axis](https://github.com/jenius/axis), [nib](https://github.com/tj/nib), [typographic](https://github.com/corysimmons/typographic), [rupture](https://github.com/jenius/rupture) [lost grid](https://github.com/corysimmons/lost) and [autoprefixer](https://github.com/sindresorhus/gulp-autoprefixer)
 
 ## Installation
 `npm install laravel-elixir-stylus-bundle --save-dev`
