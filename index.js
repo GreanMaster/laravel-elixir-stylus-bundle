@@ -5,12 +5,12 @@ var rupture      = require('rupture');
 var typographic  = require('typographic');
 var stylus       = require('gulp-stylus');
 var postcss      = require('gulp-postcss');
+var autoprefixer = require('autoprefixer-core');
 var elixir       = require('laravel-elixir');
 var gulpif       = require('laravel-elixir/node_modules/gulp-if');
 var gulpFilter   = require('laravel-elixir/node_modules/gulp-filter');
 var sourcemaps   = require('laravel-elixir/node_modules/gulp-sourcemaps');
 var minify       = require('laravel-elixir/node_modules/gulp-minify-css');
-var autoprefixer = require('laravel-elixir/node_modules/gulp-autoprefixer');
 var utilities    = require('laravel-elixir/ingredients/commands/Utilities');
 var Notification = require('laravel-elixir/ingredients/commands/Notification');
 
@@ -41,13 +41,11 @@ elixir.extend('stylusBundle', function(src, output) {
                 import: ['typographic']
             })).on('error', onError)
             .pipe(postcss([
-                lost()
+                lost(),
+                autoprefixer()
             ]))
-            .pipe(autoprefixer())
             .pipe(gulpif(config.production, minify()))
-            .pipe(gulpif(config.production, sourcemaps.write('.', {
-                includeContent: false, sourceRoot: '.'
-            })))
+            .pipe(gulpif(config.production, sourcemaps.write('.')))
             .pipe(gulp.dest(output || config.cssOutput))
             .pipe(new Notification().message('Stylus Compiled!'));
     });
