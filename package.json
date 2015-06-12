@@ -18,7 +18,7 @@
     "type": "git",
     "url": "https://github.com/GreanMaster/laravel-elixir-stylus-bundle"
   },
-  "author": "Jeffrey Way (origin), Panudet Tammawongsa (fork)",
+  "author": "Panudet Tammawongsa",
   "license": "MIT",
   "homepage": "https://github.com/GreanMaster/laravel-elixir-stylus-bundle",
   "bugs": {
